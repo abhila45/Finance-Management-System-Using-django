@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Category - Finance Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Delete Category</h2>
+    <p>Are you sure you want to delete the category "{{ category.name }}"?</p>
+    <p><strong>Type:</strong> {{ category.get_transaction_type_display }}</p>
+    
+    <form method="post" style="margin-top: 1.5rem;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'transactions:category_list' %}" class="btn">Cancel</a>
+    </form>
+</div>
+{% endblock %}

@@ -1,0 +1,44 @@
+{% extends 'base.html' %}
+
+{% block title %}Budgets - Finance Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h2>Budgets</h2>
+        <a href="{% url 'dashboard:budget_create' %}" class="btn btn-success">Add New Budget</a>
+    </div>
+    
+    {% if budgets %}
+    <table>
+        <thead>
+            <tr>
+                <th>Name</th>
+                <th>Amount</th>
+                <th>Period</th>
+                <th>Start Date</th>
+                <th>End Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for budget in budgets %}
+            <tr>
+                <td>{{ budget.name }}</td>
+                <td>${{ budget.amount|floatformat:2 }}</td>
+                <td>{{ budget.get_period_display }}</td>
+                <td>{{ budget.start_date }}</td>
+                <td>{{ budget.end_date }}</td>
+                <td>
+                    <a href="{% url 'dashboard:budget_update' budget.pk %}" class="btn">Edit</a>
+                    <a href="{% url 'dashboard:budget_delete' budget.pk %}" class="btn btn-danger">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <p>No budgets created yet. <a href="{% url 'dashboard:budget_create' %}">Create your first budget</a></p>
+    {% endif %}
+</div>
+{% endblock %}

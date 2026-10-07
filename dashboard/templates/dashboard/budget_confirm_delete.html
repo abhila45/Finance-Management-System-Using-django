@@ -1,0 +1,18 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Budget - Finance Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Delete Budget</h2>
+    <p>Are you sure you want to delete the budget "{{ budget.name }}"?</p>
+    <p><strong>Amount:</strong> ${{ budget.amount|floatformat:2 }}</p>
+    <p><strong>Period:</strong> {{ budget.get_period_display }}</p>
+    
+    <form method="post" style="margin-top: 1.5rem;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger">Yes, Delete</button>
+        <a href="{% url 'dashboard:budget_list' %}" class="btn">Cancel</a>
+    </form>
+</div>
+{% endblock %}

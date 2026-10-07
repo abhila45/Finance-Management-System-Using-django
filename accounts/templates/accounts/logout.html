@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+
+{% block title %}Logout - FinancePro{% endblock %}
+
+{% block content %}
+<div class="card" style="max-width: 500px; margin: 2rem auto; text-align: center;">
+    <h2 style="margin-bottom: 1rem;">Confirm Logout</h2>
+    <p style="color: #7f8c8d; margin-bottom: 2rem;">Are you sure you want to log out of your FinancePro account?</p>
+    
+    <form method="post" style="display: inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-danger" style="padding: 0.75rem 2rem;">Yes, Logout</button>
+    </form>
+    
+    <a href="{% url 'dashboard:home' %}" class="btn" style="padding: 0.75rem 2rem; background: #7f8c8d;">Cancel</a>
+</div>
+{% endblock %}

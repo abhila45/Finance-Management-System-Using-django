@@ -1,0 +1,160 @@
+{% extends 'base.html' %}
+
+{% block title %}Dashboard - FinancePro{% endblock %}
+
+{% block content %}
+<div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem; flex-wrap: wrap; gap: 1rem;">
+    <div style="flex: 1; min-width: 200px;">
+        <h1 style="margin: 0;">Financial Dashboard</h1>
+        <p style="color: #7f8c8d; margin: 0.5rem 0 0 0;">Welcome back, {{ user.username }}! Here's your financial overview.</p>
+    </div>
+    <div style="display: flex; gap: 0.5rem; flex-wrap: wrap;">
+        <a href="{% url 'transactions:create' %}" class="btn btn-success">+ Add Transaction</a>
+        <a href="{% url 'dashboard:budget_create' %}" class="btn">+ New Budget</a>
+    </div>
+</div>
+
+<div class="stats-grid">
+    <div class="stat-card" style="border-left: 4px solid #27ae60;">
+        <h3 style="font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Total Income</h3>
+        <div class="value income" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">${{ total_income|floatformat:2 }}</div>
+        <p style="color: #7f8c8d; font-size: clamp(0.8rem, 1.5vw, 0.9rem); margin-top: 0.5rem;">All time earnings</p>
+    </div>
+    <div class="stat-card" style="border-left: 4px solid #e74c3c;">
+        <h3 style="font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Total Expenses</h3>
+        <div class="value expense" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">${{ total_expense|floatformat:2 }}</div>
+        <p style="color: #7f8c8d; font-size: clamp(0.8rem, 1.5vw, 0.9rem); margin-top: 0.5rem;">All time spending</p>
+    </div>
+    <div class="stat-card" style="border-left: 4px solid {% if balance >= 0 %}#27ae60{% else %}#e74c3c{% endif %};">
+        <h3 style="font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Net Balance</h3>
+        <div class="value {% if balance >= 0 %}income{% else %}expense{% endif %}" style="font-size: clamp(1.75rem, 4vw, 2.5rem);">${{ balance|floatformat:2 }}</div>
+        <p style="color: #7f8c8d; font-size: clamp(0.8rem, 1.5vw, 0.9rem); margin-top: 0.5rem;">Current financial position</p>
+    </div>
+</div>
+
+{% if active_budgets %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="margin: 0;">Active Budgets</h3>
+        <a href="{% url 'dashboard:budget_list' %}" class="btn" style="padding: 0.5rem 1rem;">View All</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Budget Name</th>
+                <th>Amount</th>
+                <th>Period</th>
+                <th>End Date</th>
+                <th>Status</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for budget in active_budgets %}
+            <tr>
+                <td>{{ budget.name }}</td>
+                <td style="font-weight: 600;">${{ budget.amount|floatformat:2 }}</td>
+                <td><span style="background: #e8f4f8; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">{{ budget.get_period_display }}</span></td>
+                <td>{{ budget.end_date }}</td>
+                <td><span style="color: #27ae60; font-weight: 600;">Active</span></td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="margin: 0;">Recent Transactions</h3>
+        <a href="{% url 'transactions:list' %}" class="btn" style="padding: 0.5rem 1rem;">View All</a>
+    </div>
+    {% if recent_transactions %}
+    <table>
+        <thead>
+            <tr>
+                <th>Transaction</th>
+                <th>Amount</th>
+                <th>Type</th>
+                <th>Category</th>
+                <th>Date</th>
+                <th>Actions</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for transaction in recent_transactions %}
+            <tr>
+                <td style="font-weight: 500;">{{ transaction.title }}</td>
+                <td class="{{ transaction.transaction_type }}" style="font-weight: 600;">${{ transaction.amount|floatformat:2 }}</td>
+                <td><span style="background: {% if transaction.transaction_type == 'income' %}#d4edda{% else %}#f8d7da{% endif %}; color: {% if transaction.transaction_type == 'income' %}#155724{% else %}#721c24{% endif %}; padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem;">{{ transaction.get_transaction_type_display }}</span></td>
+                <td>{{ transaction.category.name|default:"Uncategorized" }}</td>
+                <td>{{ transaction.date }}</td>
+                <td>
+                    <a href="{% url 'transactions:update' transaction.pk %}" style="color: #1e3c72; margin-right: 0.5rem;">Edit</a>
+                    <a href="{% url 'transactions:delete' transaction.pk %}" style="color: #e74c3c;">Delete</a>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+    {% else %}
+    <div style="text-align: center; padding: 2rem;">
+        <p style="color: #7f8c8d; margin-bottom: 1rem;">No transactions recorded yet.</p>
+        <a href="{% url 'transactions:create' %}" class="btn btn-success">Add Your First Transaction</a>
+    </div>
+    {% endif %}
+</div>
+
+{% if expense_by_category %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 1rem;">
+        <h3 style="margin: 0;">Expense Breakdown by Category</h3>
+        <a href="{% url 'transactions:category_list' %}" class="btn" style="padding: 0.5rem 1rem;">Manage Categories</a>
+    </div>
+    <table>
+        <thead>
+            <tr>
+                <th>Category</th>
+                <th>Total Spent</th>
+                <th>Percentage</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for item in expense_by_category %}
+            <tr>
+                <td style="font-weight: 500;">{{ item.category__name|default:"Uncategorized" }}</td>
+                <td class="expense" style="font-weight: 600;">${{ item.total|floatformat:2 }}</td>
+                <td>
+                    <div style="background: #e8f4f8; border-radius: 10px; overflow: hidden; width: 100px; height: 20px;">
+                        <div style="background: #e74c3c; height: 100%; width: {% widthratio item.total total_expense 100 %}%;"></div>
+                    </div>
+                    <span style="font-size: 0.85rem; color: #7f8c8d;">{% widthratio item.total total_expense 100 %}%</span>
+                </td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+</div>
+{% endif %}
+
+<div class="card" style="background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white;">
+    <h3 style="color: white; margin-bottom: 1rem;">Quick Actions</h3>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1rem;">
+        <a href="{% url 'transactions:create' %}" class="quick-action-card">
+            <div class="icon">💰</div>
+            <div class="label">Add Transaction</div>
+        </a>
+        <a href="{% url 'transactions:category_create' %}" class="quick-action-card">
+            <div class="icon">📁</div>
+            <div class="label">Create Category</div>
+        </a>
+        <a href="{% url 'dashboard:budget_create' %}" class="quick-action-card">
+            <div class="icon">📊</div>
+            <div class="label">Set Budget</div>
+        </a>
+        <a href="{% url 'accounts:profile' %}" class="quick-action-card">
+            <div class="icon">👤</div>
+            <div class="label">Update Profile</div>
+        </a>
+    </div>
+</div>
+{% endblock %}

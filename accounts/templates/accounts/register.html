@@ -1,0 +1,49 @@
+{% extends 'base.html' %}
+
+{% block title %}Register - Finance Management System{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h2>Register</h2>
+    
+    {% if form.errors %}
+    <div class="alert alert-error">
+        <p>Please correct the errors below:</p>
+        <ul>
+            {% for field in form %}
+                {% for error in field.errors %}
+                    <li>{{ error }}</li>
+                {% endfor %}
+            {% endfor %}
+        </ul>
+    </div>
+    {% endif %}
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="form-group">
+            <label for="{{ form.username.id_for_label }}">Username:</label>
+            {{ form.username }}
+            {% if form.username.help_text %}
+            <small style="color: #7f8c8d;">{{ form.username.help_text }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password1.id_for_label }}">Password:</label>
+            {{ form.password1 }}
+            {% if form.password1.help_text %}
+            <small style="color: #7f8c8d;">{{ form.password1.help_text }}</small>
+            {% endif %}
+        </div>
+        <div class="form-group">
+            <label for="{{ form.password2.id_for_label }}">Confirm Password:</label>
+            {{ form.password2 }}
+            {% if form.password2.help_text %}
+            <small style="color: #7f8c8d;">{{ form.password2.help_text }}</small>
+            {% endif %}
+        </div>
+        <button type="submit" class="btn">Register</button>
+    </form>
+    <p style="margin-top: 1rem;">Already have an account? <a href="{% url 'accounts:login' %}">Login here</a></p>
+</div>
+{% endblock %}

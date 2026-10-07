@@ -1,0 +1,218 @@
+{% extends 'base.html' %}
+
+{% block title %}FinancePro - Enterprise Financial Management Platform{% endblock %}
+
+{% block content %}
+<!-- Hero Section -->
+<div class="card" style="text-align: center; padding: 4rem 2rem; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); color: white; border-radius: 0; margin-bottom: 0;">
+    <h1 style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 1rem; color: white;">FinancePro</h1>
+    <p style="font-size: clamp(1rem, 2.5vw, 1.5rem); color: #e8f4f8; margin-bottom: 2rem; max-width: 800px; margin-left: auto; margin-right: auto;">
+        Enterprise-grade financial management platform for individuals and businesses
+    </p>
+    
+    {% if not user.is_authenticated %}
+    <div style="display: flex; justify-content: center; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <a href="{% url 'accounts:register' %}" class="btn btn-success" style="font-size: clamp(0.9rem, 2vw, 1.2rem); padding: 1rem 2rem; background: #27ae60; border: none;">Start Free Trial</a>
+        <a href="{% url 'accounts:login' %}" class="btn" style="font-size: clamp(0.9rem, 2vw, 1.2rem); padding: 1rem 2rem; background: white; color: #1e3c72; border: none;">Sign In</a>
+    </div>
+    
+    <div style="text-align: center; margin-top: 1rem;">
+        <p style="color: #e8f4f8; margin: 0; font-size: clamp(0.85rem, 1.5vw, 1rem);">Already have an account? <a href="{% url 'accounts:login' %}" style="color: #4fc3f7; text-decoration: underline;">Sign in directly</a></p>
+    </div>
+    {% endif %}
+    
+    <div style="display: flex; justify-content: center; gap: 2rem; margin-top: 2rem; flex-wrap: wrap;">
+        <div style="text-align: center; min-width: 120px;">
+            <h3 style="font-size: clamp(1.5rem, 4vw, 2rem); color: #4fc3f7; margin: 0;">10K+</h3>
+            <p style="color: #e8f4f8; margin: 0; font-size: clamp(0.8rem, 1.5vw, 1rem);">Active Users</p>
+        </div>
+        <div style="text-align: center; min-width: 120px;">
+            <h3 style="font-size: clamp(1.5rem, 4vw, 2rem); color: #4fc3f7; margin: 0;">$500M+</h3>
+            <p style="color: #e8f4f8; margin: 0; font-size: clamp(0.8rem, 1.5vw, 1rem);">Transactions Tracked</p>
+        </div>
+        <div style="text-align: center; min-width: 120px;">
+            <h3 style="font-size: clamp(1.5rem, 4vw, 2rem); color: #4fc3f7; margin: 0;">99.9%</h3>
+            <p style="color: #e8f4f8; margin: 0; font-size: clamp(0.8rem, 1.5vw, 1rem);">Uptime</p>
+        </div>
+    </div>
+</div>
+
+<!-- Features Section -->
+<div class="card" style="margin-top: 2rem;">
+    <h2 style="text-align: center; margin-bottom: 2rem; font-size: clamp(1.5rem, 3vw, 2rem);">Enterprise Features</h2>
+    <div class="stats-grid" style="margin-top: 2rem;">
+        <div class="stat-card" style="border-left: 4px solid #1e3c72;">
+            <h3 style="color: #1e3c72; font-size: clamp(1rem, 2vw, 1.1rem);">Advanced Analytics</h3>
+            <p style="color: #7f8c8d; margin-top: 0.5rem; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Real-time financial insights with customizable dashboards and KPI tracking</p>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #1e3c72;">
+            <h3 style="color: #1e3c72; font-size: clamp(1rem, 2vw, 1.1rem);">Multi-Currency Support</h3>
+            <p style="color: #7f8c8d; margin-top: 0.5rem; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Handle transactions in multiple currencies with automatic conversion</p>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #1e3c72;">
+            <h3 style="color: #1e3c72; font-size: clamp(1rem, 2vw, 1.1rem);">Budget Forecasting</h3>
+            <p style="color: #7f8c8d; margin-top: 0.5rem; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">AI-powered budget predictions and financial planning tools</p>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #1e3c72;">
+            <h3 style="color: #1e3c72; font-size: clamp(1rem, 2vw, 1.1rem);">Bank Integration</h3>
+            <p style="color: #7f8c8d; margin-top: 0.5rem; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Secure API connections with major financial institutions</p>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #1e3c72;">
+            <h3 style="color: #1e3c72; font-size: clamp(1rem, 2vw, 1.1rem);">Team Collaboration</h3>
+            <p style="color: #7f8c8d; margin-top: 0.5rem; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Shared workspaces with role-based access control</p>
+        </div>
+        <div class="stat-card" style="border-left: 4px solid #1e3c72;">
+            <h3 style="color: #1e3c72; font-size: clamp(1rem, 2vw, 1.1rem);">Audit Trails</h3>
+            <p style="color: #7f8c8d; margin-top: 0.5rem; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Complete transaction history with compliance-ready logging</p>
+        </div>
+    </div>
+</div>
+
+<!-- Security Section -->
+<div class="card">
+    <h2 style="text-align: center; margin-bottom: 2rem; font-size: clamp(1.5rem, 3vw, 2rem);">Enterprise Security</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+        <div style="padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+            <h3 style="color: #1e3c72; margin-bottom: 0.5rem; font-size: clamp(1rem, 2vw, 1.1rem);">🔐 Bank-Level Encryption</h3>
+            <p style="color: #7f8c8d; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">256-bit AES encryption for all data at rest and in transit</p>
+        </div>
+        <div style="padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+            <h3 style="color: #1e3c72; margin-bottom: 0.5rem; font-size: clamp(1rem, 2vw, 1.1rem);">🛡️ SOC 2 Compliant</h3>
+            <p style="color: #7f8c8d; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Certified security controls and data protection standards</p>
+        </div>
+        <div style="padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+            <h3 style="color: #1e3c72; margin-bottom: 0.5rem; font-size: clamp(1rem, 2vw, 1.1rem);">🔑 Multi-Factor Auth</h3>
+            <p style="color: #7f8c8d; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Optional 2FA with hardware token support</p>
+        </div>
+        <div style="padding: 1.5rem; background: #f8f9fa; border-radius: 8px; border: 1px solid #e9ecef;">
+            <h3 style="color: #1e3c72; margin-bottom: 0.5rem; font-size: clamp(1rem, 2vw, 1.1rem);">📋 Compliance Ready</h3>
+            <p style="color: #7f8c8d; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">GDPR, CCPA, and financial regulation compliant</p>
+        </div>
+    </div>
+</div>
+
+<!-- Use Cases Section -->
+<div class="card">
+    <h2 style="text-align: center; margin-bottom: 2rem; font-size: clamp(1.5rem, 3vw, 2rem);">Trusted by Industry Leaders</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+        <div style="text-align: center; padding: 1.5rem;">
+            <div style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 0.5rem;">🏢</div>
+            <h3 style="color: #1e3c72; font-size: clamp(1rem, 2vw, 1.1rem);">Small Business</h3>
+            <p style="color: #7f8c8d; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Streamline expense management and cash flow tracking</p>
+        </div>
+        <div style="text-align: center; padding: 1.5rem;">
+            <div style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 0.5rem;">👨‍💼</div>
+            <h3 style="color: #1e3c72; font-size: clamp(1rem, 2vw, 1.1rem);">Freelancers</h3>
+            <p style="color: #7f8c8d; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Track income, expenses, and tax deductions efficiently</p>
+        </div>
+        <div style="text-align: center; padding: 1.5rem;">
+            <div style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 0.5rem;">👪</div>
+            <h3 style="color: #1e3c72; font-size: clamp(1rem, 2vw, 1.1rem);">Family Finance</h3>
+            <p style="color: #7f8c8d; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Collaborative budgeting and shared financial goals</p>
+        </div>
+        <div style="text-align: center; padding: 1.5rem;">
+            <div style="font-size: clamp(2rem, 5vw, 3rem); margin-bottom: 0.5rem;">🎓</div>
+            <h3 style="color: #1e3c72; font-size: clamp(1rem, 2vw, 1.1rem);">Students</h3>
+            <p style="color: #7f8c8d; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Simple expense tracking with educational insights</p>
+        </div>
+    </div>
+</div>
+
+<!-- Pricing Section -->
+<div class="card">
+    <h2 style="text-align: center; margin-bottom: 2rem; font-size: clamp(1.5rem, 3vw, 2rem);">Flexible Pricing</h2>
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(250px, 1fr)); gap: 1.5rem; margin-top: 2rem;">
+        <div style="padding: 2rem; background: #f8f9fa; border-radius: 8px; border: 2px solid #e9ecef; text-align: center;">
+            <h3 style="color: #1e3c72; font-size: clamp(1.1rem, 2vw, 1.25rem);">Starter</h3>
+            <div style="font-size: clamp(2rem, 4vw, 2.5rem); font-weight: bold; color: #1e3c72; margin: 1rem 0;">Free</div>
+            <ul style="text-align: left; color: #7f8c8d; margin: 1.5rem 0; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">
+                <li>✓ Basic transaction tracking</li>
+                <li>✓ 5 custom categories</li>
+                <li>✓ Standard reports</li>
+                <li>✓ Email support</li>
+            </ul>
+            <a href="{% url 'accounts:register' %}" class="btn" style="background: #1e3c72; color: white; border: none; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Get Started</a>
+        </div>
+        <div style="padding: 2rem; background: linear-gradient(135deg, #1e3c72 0%, #2a5298 100%); border-radius: 8px; text-align: center; color: white; transform: scale(1.05);">
+            <div style="background: #4fc3f7; color: #1e3c72; padding: 0.25rem 1rem; border-radius: 20px; display: inline-block; margin-bottom: 1rem; font-size: clamp(0.8rem, 1.5vw, 0.9rem);">Most Popular</div>
+            <h3 style="color: white; font-size: clamp(1.1rem, 2vw, 1.25rem);">Professional</h3>
+            <div style="font-size: clamp(2rem, 4vw, 2.5rem); font-weight: bold; color: white; margin: 1rem 0;">$9.99<span style="font-size: clamp(0.85rem, 1.5vw, 1rem); font-weight: normal;">/mo</span></div>
+            <ul style="text-align: left; color: #e8f4f8; margin: 1.5rem 0; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">
+                <li>✓ Everything in Starter</li>
+                <li>✓ Unlimited categories</li>
+                <li>✓ Advanced analytics</li>
+                <li>✓ Bank sync integration</li>
+                <li>✓ Priority support</li>
+            </ul>
+            <a href="{% url 'accounts:register' %}" class="btn btn-success" style="background: #27ae60; color: white; border: none; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Start Trial</a>
+        </div>
+        <div style="padding: 2rem; background: #f8f9fa; border-radius: 8px; border: 2px solid #e9ecef; text-align: center;">
+            <h3 style="color: #1e3c72; font-size: clamp(1.1rem, 2vw, 1.25rem);">Enterprise</h3>
+            <div style="font-size: clamp(2rem, 4vw, 2.5rem); font-weight: bold; color: #1e3c72; margin: 1rem 0;">Custom</div>
+            <ul style="text-align: left; color: #7f8c8d; margin: 1.5rem 0; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">
+                <li>✓ Everything in Professional</li>
+                <li>✓ Team collaboration</li>
+                <li>✓ Custom integrations</li>
+                <li>✓ Dedicated account manager</li>
+                <li>✓ SLA guarantee</li>
+            </ul>
+            <a href="#" class="btn" style="background: #1e3c72; color: white; border: none; font-size: clamp(0.85rem, 1.5vw, 0.95rem);">Contact Sales</a>
+        </div>
+    </div>
+</div>
+
+{% if not user.is_authenticated %}
+<!-- CTA Section -->
+<div class="card" style="text-align: center; background: linear-gradient(135deg, #27ae60 0%, #219150 100%); color: white; margin-top: 2rem;">
+    <h2 style="color: white; margin-bottom: 1rem;">Ready to Transform Your Financial Management?</h2>
+    <p style="margin: 1rem 0; color: #e8f4f8;">Join enterprise clients who trust FinancePro for their financial operations</p>
+    <div style="display: flex; justify-content: center; gap: 1rem; margin-top: 2rem; flex-wrap: wrap;">
+        <a href="{% url 'accounts:register' %}" class="btn" style="font-size: 1.2rem; padding: 1rem 2rem; background: white; color: #27ae60; border: none;">Start Free Trial</a>
+        <a href="{% url 'accounts:login' %}" class="btn" style="font-size: 1.2rem; padding: 1rem 2rem; background: transparent; color: white; border: 2px solid white;">Sign In</a>
+    </div>
+    <p style="margin-top: 1.5rem; color: #e8f4f8; font-size: 0.9rem;">Already have an account? <a href="{% url 'accounts:login' %}" style="color: white; text-decoration: underline; font-weight: 500;">Sign in directly to your dashboard</a></p>
+</div>
+{% endif %}
+
+<!-- Footer Information -->
+<div class="card" style="margin-top: 2rem; background: #f8f9fa;">
+    <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(200px, 1fr)); gap: 2rem;">
+        <div>
+            <h4 style="color: #1e3c72; margin-bottom: 1rem;">Product</h4>
+            <ul style="list-style: none; padding: 0; color: #7f8c8d;">
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Features</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Pricing</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Security</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Integrations</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: #1e3c72; margin-bottom: 1rem;">Company</h4>
+            <ul style="list-style: none; padding: 0; color: #7f8c8d;">
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">About Us</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Careers</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Press</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Contact</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: #1e3c72; margin-bottom: 1rem;">Resources</h4>
+            <ul style="list-style: none; padding: 0; color: #7f8c8d;">
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Documentation</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">API Reference</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Blog</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Support Center</a></li>
+            </ul>
+        </div>
+        <div>
+            <h4 style="color: #1e3c72; margin-bottom: 1rem;">Legal</h4>
+            <ul style="list-style: none; padding: 0; color: #7f8c8d;">
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Privacy Policy</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Terms of Service</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">Cookie Policy</a></li>
+                <li style="margin-bottom: 0.5rem;"><a href="#" style="color: #7f8c8d;">GDPR</a></li>
+            </ul>
+        </div>
+    </div>
+</div>
+{% endblock %}
