@@ -40,6 +40,9 @@ INSTALLED_APPS = [
     'accounts',
     'dashboard',
     'transactions',
+    'recurring',
+    'goals',
+    'analytics',
 ]
 
 MIDDLEWARE = [

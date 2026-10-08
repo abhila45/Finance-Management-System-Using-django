@@ -1,0 +1,83 @@
+{% extends 'base.html' %}
+
+{% block title %}Recurring Transactions - FinancePro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Recurring Transactions</h1>
+        <a href="{% url 'recurring:create' %}" class="btn btn-success">+ Add Recurring</a>
+    </div>
+
+    <!-- Filters -->
+    <div style="display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap;">
+        <form method="get" style="display: flex; gap: 1rem; align-items: center;">
+            <select name="status" class="form-group" style="padding: 0.5rem; border-radius: 6px; border: 2px solid #e9ecef;">
+                <option value="">All Status</option>
+                <option value="active" {% if status_filter == 'active' %}selected{% endif %}>Active</option>
+                <option value="paused" {% if status_filter == 'paused' %}selected{% endif %}>Paused</option>
+                <option value="completed" {% if status_filter == 'completed' %}selected{% endif %}>Completed</option>
+                <option value="cancelled" {% if status_filter == 'cancelled' %}selected{% endif %}>Cancelled</option>
+            </select>
+            <select name="type" class="form-group" style="padding: 0.5rem; border-radius: 6px; border: 2px solid #e9ecef;">
+                <option value="">All Types</option>
+                <option value="income" {% if type_filter == 'income' %}selected{% endif %}>Income</option>
+                <option value="expense" {% if type_filter == 'expense' %}selected{% endif %}>Expense</option>
+            </select>
+            <button type="submit" class="btn">Filter</button>
+            <a href="{% url 'recurring:list' %}" class="btn btn-danger">Clear</a>
+        </form>
+    </div>
+
+    {% if recurring_transactions %}
+        <div class="stats-grid">
+            {% for recurring in recurring_transactions %}
+                <div class="stat-card" style="border-left: 4px solid {% if recurring.transaction_type == 'income' %}#27ae60{% else %}#e74c3c{% endif %};">
+                    <div style="display: flex; justify-content: space-between; align-items: start;">
+                        <div>
+                            <h3 style="margin-bottom: 0.5rem;">{{ recurring.title }}</h3>
+                            <div class="value {% if recurring.transaction_type == 'income' %}income{% else %}expense{% endif %}">
+                                ${{ recurring.amount }}
+                            </div>
+                        </div>
+                        <span style="padding: 0.25rem 0.75rem; border-radius: 20px; font-size: 0.85rem; font-weight: 600;
+                            {% if recurring.status == 'active' %}background: #d4edda; color: #155724;
+                            {% elif recurring.status == 'paused' %}background: #fff3cd; color: #856404;
+                            {% elif recurring.status == 'completed' %}background: #d1ecf1; color: #0c5460;
+                            {% else %}background: #f8d7da; color: #721c24;{% endif %}">
+                            {{ recurring.status|title }}
+                        </span>
+                    </div>
+                    
+                    <div style="margin-top: 1rem; color: var(--light-text); font-size: 0.9rem;">
+                        <p><strong>Frequency:</strong> {{ recurring.get_frequency_display }}</p>
+                        <p><strong>Next Due:</strong> {{ recurring.next_due_date }}</p>
+                        <p><strong>Type:</strong> {{ recurring.get_transaction_type_display }}</p>
+                        {% if recurring.category %}
+                            <p><strong>Category:</strong> {{ recurring.category.name }}</p>
+                        {% endif %}
+                    </div>
+
+                    <div class="actions" style="margin-top: 1rem;">
+                        <a href="{% url 'recurring:detail' recurring.id %}" class="btn" style="font-size: 0.85rem; padding: 0.5rem 1rem;">View</a>
+                        {% if recurring.status == 'active' %}
+                            <a href="{% url 'recurring:pause' recurring.id %}" class="btn btn-danger" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Pause</a>
+                            <a href="{% url 'recurring:generate' recurring.id %}" class="btn btn-success" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Generate</a>
+                        {% elif recurring.status == 'paused' %}
+                            <a href="{% url 'recurring:resume' recurring.id %}" class="btn btn-success" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Resume</a>
+                        {% endif %}
+                        <a href="{% url 'recurring:update' recurring.id %}" class="btn" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Edit</a>
+                        <a href="{% url 'recurring:delete' recurring.id %}" class="btn btn-danger" style="font-size: 0.85rem; padding: 0.5rem 1rem;">Delete</a>
+                    </div>
+                </div>
+            {% endfor %}
+        </div>
+    {% else %}
+        <div class="text-center" style="padding: 3rem;">
+            <h3 style="color: var(--light-text);">No recurring transactions found</h3>
+            <p style="color: var(--light-text); margin-bottom: 1rem;">Start by adding your first recurring transaction</p>
+            <a href="{% url 'recurring:create' %}" class="btn btn-success">Add Recurring Transaction</a>
+        </div>
+    {% endif %}
+</div>
+{% endblock %}

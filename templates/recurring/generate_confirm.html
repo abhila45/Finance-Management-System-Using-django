@@ -1,0 +1,29 @@
+{% extends 'base.html' %}
+
+{% block title %}Generate Transaction - FinancePro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Generate Transaction</h1>
+    
+    <p style="margin-bottom: 2rem;">Are you sure you want to generate a transaction from "<strong>{{ recurring.title }}</strong>"?</p>
+    
+    <div style="background: var(--light-bg); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+        <p><strong>Title:</strong> {{ recurring.title }}</p>
+        <p><strong>Amount:</strong> ${{ recurring.amount }}</p>
+        <p><strong>Type:</strong> {{ recurring.get_transaction_type_display }}</p>
+        <p><strong>Due Date:</strong> {{ recurring.next_due_date }}</p>
+        {% if recurring.category %}
+            <p><strong>Category:</strong> {{ recurring.category.name }}</p>
+        {% endif %}
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="actions">
+            <button type="submit" class="btn btn-success">Yes, Generate Transaction</button>
+            <a href="{% url 'recurring:detail' recurring.id %}" class="btn">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

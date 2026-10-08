@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Income Analysis - FinancePro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Income Analysis</h1>
+        <a href="{% url 'analytics:dashboard' %}" class="btn">Back to Dashboard</a>
+    </div>
+
+    <h2 style="margin-bottom: 1rem;">Income by Category</h2>
+    {% if income_by_category %}
+        <table style="margin-bottom: 2rem;">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Total Income</th>
+                    <th>Transaction Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cat in income_by_category %}
+                    <tr>
+                        <td>{{ cat.category__name|default:"Uncategorized" }}</td>
+                        <td class="income">${{ cat.total|floatformat:2 }}</td>
+                        <td>{{ cat.count }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: var(--light-text); margin-bottom: 2rem;">No income data available.</p>
+    {% endif %}
+
+    <h2 style="margin-bottom: 1rem;">Monthly Income Trend</h2>
+    {% if monthly_income %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Income</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for month in monthly_income %}
+                    <tr>
+                        <td>{{ month.month|date:"F Y" }}</td>
+                        <td class="income">${{ month.total|floatformat:2 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: var(--light-text);">No monthly data available.</p>
+    {% endif %}
+</div>
+{% endblock %}

@@ -1,0 +1,95 @@
+{% extends 'base.html' %}
+
+{% block title %}{{ recurring.title }} - FinancePro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>{{ recurring.title }}</h1>
+        <div class="actions">
+            <a href="{% url 'recurring:list' %}" class="btn">Back to List</a>
+            <a href="{% url 'recurring:update' recurring.id %}" class="btn">Edit</a>
+            <a href="{% url 'recurring:delete' recurring.id %}" class="btn btn-danger">Delete</a>
+        </div>
+    </div>
+
+    <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+            <h3>Amount</h3>
+            <div class="value {% if recurring.transaction_type == 'income' %}income{% else %}expense{% endif %}">
+                ${{ recurring.amount }}
+            </div>
+        </div>
+        <div class="stat-card">
+            <h3>Type</h3>
+            <div class="value">{{ recurring.get_transaction_type_display }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Frequency</h3>
+            <div class="value">{{ recurring.get_frequency_display }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Status</h3>
+            <div class="value">{{ recurring.status|title }}</div>
+        </div>
+    </div>
+
+    <div style="background: var(--light-bg); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+        <h3 style="margin-bottom: 1rem;">Details</h3>
+        <p><strong>Start Date:</strong> {{ recurring.start_date }}</p>
+        <p><strong>Next Due Date:</strong> {{ recurring.next_due_date }}</p>
+        {% if recurring.end_date %}
+            <p><strong>End Date:</strong> {{ recurring.end_date }}</p>
+        {% endif %}
+        <p><strong>Last Generated:</strong> {{ recurring.last_generated|default:"Never" }}</p>
+        <p><strong>Reminder Days:</strong> {{ recurring.reminder_days }} days before due</p>
+        {% if recurring.category %}
+            <p><strong>Category:</strong> {{ recurring.category.name }}</p>
+        {% endif %}
+        {% if recurring.description %}
+            <p><strong>Description:</strong> {{ recurring.description }}</p>
+        {% endif %}
+    </div>
+
+    <div class="actions" style="margin-bottom: 2rem;">
+        {% if recurring.status == 'active' %}
+            <a href="{% url 'recurring:pause' recurring.id %}" class="btn btn-danger">Pause</a>
+            <a href="{% url 'recurring:generate' recurring.id %}" class="btn btn-success">Generate Transaction Now</a>
+        {% elif recurring.status == 'paused' %}
+            <a href="{% url 'recurring:resume' recurring.id %}" class="btn btn-success">Resume</a>
+        {% endif %}
+    </div>
+
+    <h2 style="margin-bottom: 1rem;">Generation History</h2>
+    {% if logs %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Generated Date</th>
+                    <th>Due Date</th>
+                    <th>Transaction</th>
+                    <th>Notes</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for log in logs %}
+                    <tr>
+                        <td>{{ log.generated_date|date:"Y-m-d H:i" }}</td>
+                        <td>{{ log.due_date }}</td>
+                        <td>
+                            {% if log.generated_transaction %}
+                                <a href="{% url 'transactions:list' %}">{{ log.generated_transaction.title }}</a>
+                            {% else %}
+                                -
+                            {% endif %}
+                        </td>
+                        <td>{{ log.notes|default:"-" }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: var(--light-text);">No transactions generated yet.</p>
+    {% endif %}
+</div>
+{% endblock %}

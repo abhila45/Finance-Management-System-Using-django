@@ -1,0 +1,58 @@
+{% extends 'base.html' %}
+
+{% block title %}Spending Trends - FinancePro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Spending Trends</h1>
+        <a href="{% url 'analytics:dashboard' %}" class="btn">Back to Dashboard</a>
+    </div>
+
+    <h2 style="margin-bottom: 1rem;">Spending by Category</h2>
+    {% if category_spending %}
+        <table style="margin-bottom: 2rem;">
+            <thead>
+                <tr>
+                    <th>Category</th>
+                    <th>Total Spent</th>
+                    <th>Transaction Count</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for cat in category_spending %}
+                    <tr>
+                        <td>{{ cat.category__name|default:"Uncategorized" }}</td>
+                        <td class="expense">${{ cat.total|floatformat:2 }}</td>
+                        <td>{{ cat.count }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: var(--light-text); margin-bottom: 2rem;">No spending data available.</p>
+    {% endif %}
+
+    <h2 style="margin-bottom: 1rem;">Monthly Spending Trend</h2>
+    {% if monthly_spending %}
+        <table>
+            <thead>
+                <tr>
+                    <th>Month</th>
+                    <th>Total Spent</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for month in monthly_spending %}
+                    <tr>
+                        <td>{{ month.month|date:"F Y" }}</td>
+                        <td class="expense">${{ month.total|floatformat:2 }}</td>
+                    </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    {% else %}
+        <p style="color: var(--light-text);">No monthly data available.</p>
+    {% endif %}
+</div>
+{% endblock %}

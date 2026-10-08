@@ -1,0 +1,27 @@
+{% extends 'base.html' %}
+
+{% block title %}Delete Recurring Transaction - FinancePro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <h1>Delete Recurring Transaction</h1>
+    
+    <p style="margin-bottom: 2rem;">Are you sure you want to delete the recurring transaction "<strong>{{ recurring.title }}</strong>"?</p>
+    
+    <div style="background: var(--light-bg); padding: 1.5rem; border-radius: 8px; margin-bottom: 2rem;">
+        <p><strong>Title:</strong> {{ recurring.title }}</p>
+        <p><strong>Amount:</strong> ${{ recurring.amount }}</p>
+        <p><strong>Type:</strong> {{ recurring.get_transaction_type_display }}</p>
+        <p><strong>Frequency:</strong> {{ recurring.get_frequency_display }}</p>
+        <p><strong>Next Due:</strong> {{ recurring.next_due_date }}</p>
+    </div>
+    
+    <form method="post">
+        {% csrf_token %}
+        <div class="actions">
+            <button type="submit" class="btn btn-danger">Yes, Delete</button>
+            <a href="{% url 'recurring:list' %}" class="btn">Cancel</a>
+        </div>
+    </form>
+</div>
+{% endblock %}

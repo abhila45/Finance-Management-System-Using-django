@@ -36,6 +36,17 @@ class Transaction(models.Model):
         ("expense", "Expense"),
     ]
 
+    CURRENCY_CHOICES = [
+        ('USD', 'US Dollar ($)'),
+        ('EUR', 'Euro (€)'),
+        ('GBP', 'British Pound (£)'),
+        ('JPY', 'Japanese Yen (¥)'),
+        ('INR', 'Indian Rupee (₹)'),
+        ('CAD', 'Canadian Dollar (C$)'),
+        ('AUD', 'Australian Dollar (A$)'),
+        ('CNY', 'Chinese Yuan (¥)'),
+    ]
+
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -56,10 +67,24 @@ class Transaction(models.Model):
     )
     date = models.DateField()
     description = models.TextField(blank=True)
+    tags = models.CharField(max_length=200, blank=True, help_text="Comma-separated tags")
+    currency = models.CharField(max_length=3, choices=CURRENCY_CHOICES, default='USD')
     created_at = models.DateTimeField(auto_now_add=True)
 
     class Meta:
         ordering = ["-date", "-created_at"]
 
     def __str__(self):
-        return f"{self.title} - {self.amount} ({self.transaction_type})"
+        return f"{self.title} - {self.amount} {self.currency} ({self.transaction_type})"
+
+    def get_tags(self):
+        """Return tags as a list"""
+        return [tag.strip() for tag in self.tags.split(',') if tag.strip()] if self.tags else []
+
+    def get_currency_symbol(self):
+        """Get currency symbol"""
+        symbols = {
+            'USD': '$', 'EUR': '€', 'GBP': '£', 'JPY': '¥',
+            'INR': '₹', 'CAD': 'C$', 'AUD': 'A$', 'CNY': '¥'
+        }
+        return symbols.get(self.currency, '$')

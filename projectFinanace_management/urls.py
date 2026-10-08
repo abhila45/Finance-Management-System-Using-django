@@ -27,6 +27,9 @@ urlpatterns = [
     path("admin/", admin.site.urls),
     path("accounts/", include("accounts.urls")),
     path("transactions/", include("transactions.urls")),
+    path("recurring/", include("recurring.urls")),
+    path("analytics/", include("analytics.urls")),
+    path("goals/", include("goals.urls")),
     path("", include("dashboard.urls")),
 ]
 

@@ -4,9 +4,11 @@ from .models import Transaction, Category
 class TransactionForm(forms.ModelForm):
     class Meta:
         model = Transaction
-        fields = ["title", "amount", "transaction_type", "category", "date", "description"]
+        fields = ["title", "amount", "transaction_type", "category", "date", "description", "tags", "currency"]
         widgets = {
             "date": forms.DateInput(attrs={"type": "date"}),
+            "tags": forms.TextInput(attrs={"placeholder": "food, grocery, urgent"}),
+            "currency": forms.Select(attrs={"class": "form-control"}),
         }
 
     def __init__(self, *args, **kwargs):

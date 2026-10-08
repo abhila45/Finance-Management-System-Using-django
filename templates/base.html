@@ -28,6 +28,8 @@
                 <span style="color: #4fc3f7; margin-right: 1rem; font-weight: 500;">{{ user.username }}</span>
                 <a href="{% url 'dashboard:home' %}">Dashboard</a>
                 <a href="{% url 'transactions:list' %}">Transactions</a>
+                <a href="{% url 'recurring:list' %}">Recurring</a>
+                <a href="{% url 'analytics:dashboard' %}">Analytics</a>
                 <a href="{% url 'dashboard:budget_list' %}">Budgets</a>
                 <a href="{% url 'accounts:profile' %}">Account</a>
                 <form method="post" action="{% url 'accounts:logout' %}" style="display: inline;">

@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+
+{% block title %}Analytics Dashboard - FinancePro{% endblock %}
+
+{% block content %}
+<div class="card">
+    <div style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 2rem;">
+        <h1>Analytics Dashboard</h1>
+        <div style="display: flex; gap: 0.5rem;">
+            <a href="?period=7" class="btn {% if period == '7' %}btn-primary{% endif %}">7 Days</a>
+            <a href="?period=30" class="btn {% if period == '30' %}btn-primary{% endif %}">30 Days</a>
+            <a href="?period=90" class="btn {% if period == '90' %}btn-primary{% endif %}">90 Days</a>
+            <a href="?period=365" class="btn {% if period == '365' %}btn-primary{% endif %}">1 Year</a>
+        </div>
+    </div>
+
+    <!-- Key Metrics -->
+    <div class="stats-grid" style="margin-bottom: 2rem;">
+        <div class="stat-card">
+            <h3>Total Income</h3>
+            <div class="value income">${{ total_income|floatformat:2 }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Total Expenses</h3>
+            <div class="value expense">${{ total_expense|floatformat:2 }}</div>
+        </div>
+        <div class="stat-card">
+            <h3>Net Balance</h3>
+            <div class="value {% if net_balance >= 0 %}income{% else %}expense{% endif %}">
+                ${{ net_balance|floatformat:2 }}
+            </div>
+        </div>
+        <div class="stat-card">
+            <h3>Avg Daily Spending</h3>
+            <div class="value">${{ avg_daily_spending|floatformat:2 }}</div>
+        </div>
+    </div>
+
+    <!-- Category Breakdown -->
+    <div style="margin-bottom: 2rem;">
+        <h2 style="margin-bottom: 1rem;">Top Spending Categories</h2>
+        {% if top_categories %}
+            <table>
+                <thead>
+                    <tr>
+                        <th>Category</th>
+                        <th>Total</th>
+                        <th>Transactions</th>
+                        <th>% of Total</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    {% for cat in top_categories %}
+                        <tr>
+                            <td>{{ cat.category__name|default:"Uncategorized" }}</td>
+                            <td class="expense">${{ cat.total|floatformat:2 }}</td>
+                            <td>{{ cat.count }}</td>
+                            <td>
+                                {% if total_expense > 0 %}
+                                    {{ cat.total|floatformat:1 }}%
+                                {% else %}
+                                    0%
+                                {% endif %}
+                            </td>
+                        </tr>
+                    {% endfor %}
+                </tbody>
+            </table>
+        {% else %}
+            <p style="color: var(--light-text);">No expense data available for this period.</p>
+        {% endif %}
+    </div>
+
+    <!-- Quick Links -->
+    <div class="actions">
+        <a href="{% url 'analytics:spending_trends' %}?period={{ period }}" class="btn">View Spending Trends</a>
+        <a href="{% url 'analytics:income_analysis' %}?period={{ period }}" class="btn">View Income Analysis</a>
+        <a href="{% url 'transactions:list' %}" class="btn">View All Transactions</a>
+    </div>
+</div>
+{% endblock %}
